@@ -19,9 +19,10 @@ export class StatisticsService {
     private notificationsService: NotificationService,
   ) {}
 
-  profitDay() {
-    this.notificationsService.sendEmail('message for test');
-    return this.dbConnection.query(TEST);
+  async profitDay() {
+    const result = await this.moneyByDay('5');
+    this.notificationsService.sendEmail(`Hoy ganaste ${result} $`);
+    return {};
   }
 
   async getUserTime(idUser: string): Promise<any> {

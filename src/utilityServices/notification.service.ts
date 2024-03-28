@@ -41,7 +41,7 @@ export class NotificationService {
       this.mailerService.sendMail({
         to: 'jdjason569@gmail.com',
         from: 'jdjason569develop@gmail.com',
-        subject: 'Notificacion del turno',
+        subject: 'Ganancias por dia',
         text: message,
       });
     }
