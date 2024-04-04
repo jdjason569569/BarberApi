@@ -20,7 +20,7 @@ export class CustomersController {
 
     @Post()
     create(@Body() body: Customer) {
-        return this.customersService.create(body);
+        return this.customersService.create(body, false);
     }
 
     @Put(':id')

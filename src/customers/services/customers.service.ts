@@ -17,6 +17,7 @@ export class CustomerService {
         user: {
           id_users: +id,
         },
+        fast_customer : false
       },
     });
   }
@@ -29,15 +30,15 @@ export class CustomerService {
     return await this.customerRepo.findOne({ where: { id_customer: +id } });
   }
 
-  async create(body: Customer) {
+  async create(body: Customer, isFastCustomer: boolean) {
     try {
       const existCustomer = await this.findCustomerPhone(body.phone);
-      if (!existCustomer) {
+      if (!existCustomer || isFastCustomer) {
         return await this.customerRepo.save(this.customerRepo.create(body));
       } else {
         return {
           status: Response.ERROR,
-          message: 'Ya esxiste un cliente con el numero telefonico',
+          message: 'Ya existe un cliente con el numero telefonico',
         };
       }
     } catch (error) {

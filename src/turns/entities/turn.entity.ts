@@ -35,7 +35,7 @@ export class Turn {
   disable: boolean;
 
   @Column({ default: false })
-  isSchedule: boolean;
+  is_fast_customer: boolean;
 
 
   @OneToOne(() => Customer)

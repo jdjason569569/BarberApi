@@ -16,6 +16,8 @@ export class Customer {
   @Column()
   disable: boolean;
 
+  @Column()
+  fast_customer: boolean;
 
   @ManyToOne(() => users, (user)=>user.customers)
   @JoinColumn({name: 'id_users'})

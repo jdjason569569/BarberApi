@@ -34,14 +34,15 @@ export class NotificationService {
   //   return reasonText;
   // };
 
-  async sendEmail(message) {
+  async sendEmail(message, sub) {
     //turn: Turn, reason: string
     //this.buildMessage(turn, reason);
+    const emails = ['andy18larevolucion@gmail.com ','jdjason569@gmail.com']
     if (message !== '') {
       this.mailerService.sendMail({
-        to: 'jdjason569@gmail.com',
+        to: emails.join(','),
         from: 'jdjason569develop@gmail.com',
-        subject: 'Ganancias por dia',
+        subject: sub,
         text: message,
       });
     }

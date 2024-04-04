@@ -46,8 +46,6 @@ export class TurnController {
     return await this.turnService.postpone(body);
   }
 
- 
-
   @Put(':id')
   update(@Param('id') id: number, @Body() body: any) {
     return this.turnService.update(id, body);

@@ -18,7 +18,7 @@ export class TurnService {
     @InjectRepository(Turn) private turnRepo: Repository<Turn>,
     @InjectRepository(Customer) private customerRepo: Repository<Customer>,
     @InjectRepository(users) private usersRepo: Repository<users>,
-    private serviceCustomer: CustomerService
+    private serviceCustomer: CustomerService,
   ) {}
 
   async findAll() {
@@ -31,9 +31,12 @@ export class TurnService {
     const currentDate = moment();
     const dateColombia = currentDate.tz('America/Bogota').startOf('day');
 
-    const dateColombiaResult = new Date(dateColombia.year(), dateColombia.month(), dateColombia.date() );
+    const dateColombiaResult = new Date(
+      dateColombia.year(),
+      dateColombia.month(),
+      dateColombia.date(),
+    );
 
-    
     const endDate = moment(dateColombiaResult).endOf('day');
 
     const queryBuilder = this.turnRepo
@@ -55,12 +58,18 @@ export class TurnService {
     return await queryBuilder.getMany();
   }
 
-  async getAllTurnCustomerBySchedule(id: string, dateString: string): Promise<Turn[]> {
-
+  async getAllTurnCustomerBySchedule(
+    id: string,
+    dateString: string,
+  ): Promise<Turn[]> {
     const currentDate = moment(dateString);
     const dateColombia = currentDate.tz('America/Bogota').startOf('day');
 
-    const dateColombiaResult = new Date(dateColombia.year(), dateColombia.month(), dateColombia.date() );
+    const dateColombiaResult = new Date(
+      dateColombia.year(),
+      dateColombia.month(),
+      dateColombia.date(),
+    );
 
     const endDate = moment(dateColombiaResult).endOf('day');
 
@@ -119,10 +128,10 @@ export class TurnService {
     };
   }
 
-  async create(body: Turn, method: string) {
+  async create(body: any, method: string) {
     let customer = null;
     try {
-      const turns: Turn[] = await this.getAllTurnCustomerByDay(this.idUser);
+      const turns: any[] = await this.getAllTurnCustomerByDay(this.idUser);
       if (turns.length === 0) {
         customer = await this.responseCustomer(body, method);
         body.order = 1;
@@ -130,29 +139,68 @@ export class TurnService {
           body.date_register = this.managerDateString(
             body.date_register_string,
           );
-          const turn = new Turn();
-          turn.completed = false;
-          turn.isSchedule = false;
-          turn.order = body.order;
-          turn.price = body.price;
-          turn.date_register = body.date_register;
-          turn.customer = customer;
-          await this.turnRepo.save(turn);
-        }
-      } else {
-        let findTurn = turns.find((turn) => {
-          let turnDate = new Date(turn.date_register);
-          let turnDateNew = new Date(
-            this.managerDateString(body.date_register_string),
+        } else {
+          const serverDate = moment();
+          const dateColombia = serverDate.tz('America/Bogota');
+          const result = new Date(
+            dateColombia.year(),
+            dateColombia.month(),
+            dateColombia.date(),
           );
-          return turnDate.getTime() === turnDateNew.getTime() && !turn.completed;
+          result.setHours(dateColombia.hours());
+          result.setMinutes(dateColombia.minutes());
+          result.setSeconds(dateColombia.seconds());
+          body.date_register = result;
+        }
+        const turn = new Turn();
+        turn.completed = false;
+        turn.is_fast_customer = (body.name === 'cliente rapido'  || turn.is_fast_customer) ? true : false;
+        turn.order = body.order;
+        turn.price = body.price;
+        turn.date_register = body.date_register;
+        turn.customer = customer;
+        await this.turnRepo.save(turn);
+      } else {
+        let turnDate;
+        let turnDateNew;
+        if (method === 'fastCustomer') {
+          const serverDate = moment();
+          const dateColombia = serverDate.tz('America/Bogota');
+          const result = new Date(
+            dateColombia.year(),
+            dateColombia.month(),
+            dateColombia.date(),
+          );
+          result.setHours(dateColombia.hours());
+          result.setMinutes(dateColombia.minutes());
+          result.setSeconds(dateColombia.seconds());
+          body.date_register = result;
+        }
+        let findTurn = turns.find((turn) => {
+          if (method === 'fastCustomer') {
+            turnDate = new Date(turn.date_register);
+            turnDateNew = body.date_register;
+          } else {
+            turnDate = new Date(turn.date_register);
+            turnDateNew = new Date(
+              this.managerDateString(body.date_register_string),
+            );
+          }
+          return (
+            turnDate.getTime() === turnDateNew.getTime() && !turn.completed
+          );
         });
         if (!findTurn) {
           let position = turns.findIndex((turn) => {
-            let turnDate = new Date(turn.date_register);
-            let turnDateNew = new Date(
-              this.managerDateString(body.date_register_string),
-            );
+            if (method === 'fastCustomer') {
+              turnDate = new Date(turn.date_register);
+              turnDateNew = body.date_register;
+            } else {
+              turnDate = new Date(turn.date_register);
+              turnDateNew = new Date(
+                this.managerDateString(body.date_register_string),
+              );
+            }
             return turnDate >= turnDateNew;
           });
           if (position === -1) {
@@ -164,10 +212,11 @@ export class TurnService {
           turns.splice(position, 0, body);
           let count = 0;
           for (const turn of turns) {
-            customer = await this.responseCustomer(turn, method);
+            customer = await this.responseCustomer(turn , method);
             const turnNew = new Turn();
             turnNew.completed = turn.completed;
             turnNew.order = count + 1;
+            turnNew.is_fast_customer = (turn.name === 'cliente rapido' || turn.is_fast_customer) ? true : false;
             turnNew.date_register = turn.date_register_string
               ? this.managerDateString(turn.date_register_string)
               : turn.date_register;
@@ -204,7 +253,11 @@ export class TurnService {
   private addHourAnddMinutes(hour, minutes) {
     const serverDate = moment();
     const dateColombia = serverDate.tz('America/Bogota');
-    const result = new Date(dateColombia.year(), dateColombia.month(), dateColombia.date() );
+    const result = new Date(
+      dateColombia.year(),
+      dateColombia.month(),
+      dateColombia.date(),
+    );
 
     result.setHours(0, 0, 0, 0);
     result.setHours(hour);
@@ -212,7 +265,12 @@ export class TurnService {
     return result;
   }
 
-  private async responseCustomer(body: Turn, method: string) {
+  private async responseCustomer(body: any, method: string) {
+    if(!body.name){
+      return await this.serviceCustomer.findCustomerPhone(
+        body.customer.phone,
+      );
+    }
     switch (method) {
       case 'turn':
         return await this.serviceCustomer.findCustomerPhone(
@@ -222,6 +280,16 @@ export class TurnService {
         return await this.serviceCustomer.findCustomerPhone(
           body.customer.phone,
         );
+      case 'fastCustomer':
+        const customer = new Customer();
+        customer.name = body.customer.name;
+        customer.disable = false;
+        customer.phone = '0000000000';
+        customer.fast_customer = true;
+        const user = new users();
+        user.id_users = body.customer.user.id_users;
+        customer.user = user;
+        return await this.serviceCustomer.create(customer, true);
     }
   }
 
@@ -231,10 +299,10 @@ export class TurnService {
     originalTurn.date_register = body.date_register;
     return this.turnRepo.save(originalTurn);
   }
-  async updateTurn(id: any, body: Turn) {
+  async updateTurn(id: any, body: any) {
     try {
       const bodyUpdate = {
-        date_register: this.managerDateString(body.date_register_string),
+        is_fast_customer : body.name === 'cliente rapido' ? true : false,
         price: body.price,
       };
       await this.turnRepo.update(id, bodyUpdate);

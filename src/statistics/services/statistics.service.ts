@@ -21,8 +21,12 @@ export class StatisticsService {
 
   async profitDay() {
     const result = await this.moneyByDay('5');
-    this.notificationsService.sendEmail(`Hoy ganaste ${result} $`);
-    return {};
+    if(result.length > 0){
+      this.notificationsService.sendEmail(`Hola andres! Hoy ganaste ${result[0].total} $`,  'Ganancias por dia',);
+    }else{
+      this.notificationsService.sendEmail(`Hola andres! Aun no tienes turnos agendados, recuerda que para tener y generar promociones debes agendar turnos`,  'Recordatorio!!',);
+    }
+    return await this.dbConnection.query(TEST);
   }
 
   async getUserTime(idUser: string): Promise<any> {

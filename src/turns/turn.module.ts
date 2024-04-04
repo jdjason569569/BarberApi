@@ -10,7 +10,6 @@ import { users } from 'src/user/entities/users.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Turn, Customer, users]),
-    
   ],
   providers: [TurnService, CustomerService],
   controllers: [TurnController]
