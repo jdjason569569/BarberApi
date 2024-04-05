@@ -29,7 +29,11 @@ require('dotenv').config();
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: false,
       retryDelay: 3000,
-      retryAttempts: 10
+      retryAttempts: 10,
+      ssl:
+        process.env.NODE_ENV === 'production'
+          ? { rejectUnauthorized: false }
+          : false,
     }),
     MailerModule.forRoot({
       transport: {
