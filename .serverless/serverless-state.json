@@ -179,7 +179,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/api-barber-8/production/1712115131219-2024-04-03T03:32:11.219Z/api-barber-8.zip"
+                "S3Key": "serverless/api-barber-8/production/1712295071957-2024-04-05T05:31:11.957Z/api-barber-8.zip"
               },
               "Handler": "dist/lambda.handler",
               "Runtime": "nodejs18.x",
@@ -200,14 +200,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersion8FtLM7rNmbGwPdri4hCILbOj4LY3SYqVR72DFth3Kk": {
+          "ApiLambdaVersionLxAF4l7dcgKmMI3JRoBhcAPaaRphDYnguW9BwGUK0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "GNOqT0jDBQGUWdg1+nM0Zq+iRZG7sI/4P1OfLL64ks0="
+              "CodeSha256": "CSA4RHJ1iw1KPRqGiqMBT9dekumR6Nm/c7hsmh9KECU="
             }
           },
           "ApiGatewayRestApi": {
@@ -328,7 +328,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1712115041546": {
+          "ApiGatewayDeployment1712294990851": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -391,7 +391,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersion8FtLM7rNmbGwPdri4hCILbOj4LY3SYqVR72DFth3Kk"
+              "Ref": "ApiLambdaVersionLxAF4l7dcgKmMI3JRoBhcAPaaRphDYnguW9BwGUK0"
             },
             "Export": {
               "Name": "sls-api-barber-8-production-ApiLambdaFunctionQualifiedArn"
@@ -543,7 +543,7 @@
         "timeout": 15,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersion8FtLM7rNmbGwPdri4hCILbOj4LY3SYqVR72DFth3Kk"
+        "versionLogicalId": "ApiLambdaVersionLxAF4l7dcgKmMI3JRoBhcAPaaRphDYnguW9BwGUK0"
       }
     },
     "configValidationMode": "warn",
@@ -565,7 +565,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/api-barber-8/production/1712115131219-2024-04-03T03:32:11.219Z",
+    "artifactDirectoryName": "serverless/api-barber-8/production/1712295071957-2024-04-05T05:31:11.957Z",
     "artifact": "api-barber-8.zip"
   }
 }

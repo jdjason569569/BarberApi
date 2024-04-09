@@ -154,7 +154,7 @@ export class TurnService {
         }
         const turn = new Turn();
         turn.completed = false;
-        turn.is_fast_customer = (body.name === 'cliente rapido'  || turn.is_fast_customer) ? true : false;
+        turn.is_fast_customer = (body.name === 'cliente rapido'  || body.is_fast_customer) ? true : false;
         turn.order = body.order;
         turn.price = body.price;
         turn.date_register = body.date_register;
@@ -284,7 +284,7 @@ export class TurnService {
         const customer = new Customer();
         customer.name = body.customer.name;
         customer.disable = false;
-        customer.phone = '0000000000';
+        customer.phone = String(Math.floor(Math.random() * 100000) + 1);
         customer.fast_customer = true;
         const user = new users();
         user.id_users = body.customer.user.id_users;
