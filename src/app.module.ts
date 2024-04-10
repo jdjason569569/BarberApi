@@ -32,7 +32,7 @@ require('dotenv').config();
       retryAttempts: 10,
       ssl:
         process.env.NODE_ENV === 'production'
-          ? { rejectUnauthorized: false }
+          ? { rejectUnauthorized: true }
           : false,
     }),
     MailerModule.forRoot({

@@ -163,7 +163,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/api-barber-8/production/1712295071957-2024-04-05T05:31:11.957Z/api-barber-8.zip"
+          "S3Key": "serverless/api-barber-8/production/1712717982889-2024-04-10T02:59:42.889Z/api-barber-8.zip"
         },
         "Handler": "dist/lambda.handler",
         "Runtime": "nodejs18.x",
@@ -184,14 +184,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionLxAF4l7dcgKmMI3JRoBhcAPaaRphDYnguW9BwGUK0": {
+    "ApiLambdaVersionPa3uASRkTwUHd2QsIV2P5ruWtmzciO2RLjWvM2burM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "CSA4RHJ1iw1KPRqGiqMBT9dekumR6Nm/c7hsmh9KECU="
+        "CodeSha256": "cin4poBtriRwzZEcxle3cPO1UNzjNh4upEYARI531Lk="
       }
     },
     "ApiGatewayRestApi": {
@@ -312,7 +312,7 @@
         "ApiLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1712294990851": {
+    "ApiGatewayDeployment1712717911704": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -375,7 +375,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionLxAF4l7dcgKmMI3JRoBhcAPaaRphDYnguW9BwGUK0"
+        "Ref": "ApiLambdaVersionPa3uASRkTwUHd2QsIV2P5ruWtmzciO2RLjWvM2burM"
       },
       "Export": {
         "Name": "sls-api-barber-8-production-ApiLambdaFunctionQualifiedArn"

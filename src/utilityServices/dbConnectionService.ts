@@ -15,7 +15,7 @@ export class DbConnectionService {
       max: 30,
       ssl:
         process.env.NODE_ENV === 'production'
-          ? { rejectUnauthorized: false }
+          ? { rejectUnauthorized: true }
           : false,
     });
   }
