@@ -13,7 +13,10 @@ export class DbConnectionService {
       password: process.env.DB_PASSWORD,
       port: parseInt(process.env.DB_PORT || '5432'),
       max: 30,
-      ssl: true
+      ssl:
+        process.env.NODE_ENV === 'production'
+          ? { rejectUnauthorized: false }
+          : false,
     });
   }
 
